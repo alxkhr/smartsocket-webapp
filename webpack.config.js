@@ -27,5 +27,14 @@ module.exports = {
   devServer: {
     writeToDisk: true,
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'https://smartsocket-api.herokuapp.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '/api': '',
+        },
+      },
+    },
   },
 };

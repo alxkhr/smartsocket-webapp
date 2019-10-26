@@ -11,29 +11,22 @@ export function DeviceList() {
   }, []);
   return (
     <ul>
-      {devices.map(({ id, name }) => (
+      {devices.map(({ id, friendlyName }) => (
         <li
           key={id}
           onClick={() => {
             history.push(`/device/${id}/details`);
           }}
         >
-          {name}
+          {friendlyName}
         </li>
       ))}
     </ul>
   );
 }
 
-const deviceMock: Device[] = [
-  { id: '123', name: 'Smartphone 1' },
-  { id: '456', name: 'Porsche 1' },
-  { id: '789', name: 'Rasenmäher 1' },
-];
-
 async function fetchDevices(setDevices: (devices: Device[]) => void) {
-  await new Promise((resolve) => {
-    window.setTimeout(resolve, 100);
-  });
-  setDevices(deviceMock);
+  const response = await fetch('/api/devices');
+  const devices: Device[] = await response.json();
+  setDevices(devices);
 }
