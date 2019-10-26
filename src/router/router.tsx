@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { DeviceConfig } from './device/config/config';
-import { DeviceDetails } from './device/details/details';
-import { DeviceList } from './device/list/list';
+import { DeviceConfig } from '../device/config/config';
+import { DeviceDetails } from '../device/details/details';
+import { DeviceList } from '../device/list/list';
 
 export function Router() {
   return (
     <BrowserRouter>
-      <div>header</div>
       <Switch>
         <Route path="/devices">
           <DeviceList />

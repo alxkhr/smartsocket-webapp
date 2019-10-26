@@ -1,0 +1,45 @@
+:root {
+  --cell-side: calc(30rem - 1rem);
+  --column-count: 1;
+}
+@media (min-width: 32rem) {
+  :root {
+    --cell-side: calc(100vw - 2rem);
+    --column-count: 1;
+  }
+}
+@media (min-width: 47rem) {
+  :root {
+    --cell-side: calc((100vw - 1rem) / 2 - 1rem);
+    --column-count: 2;
+  }
+}
+@media (min-width: 72rem) {
+  :root {
+    --cell-side: calc((100vw - 1rem) / 3 - 1rem);
+    --column-count: 3;
+  }
+}
+@media (min-width: 87rem) {
+  :root {
+    --cell-side: calc(86rem / 3 - 1rem);
+    --column-count: 3;
+  }
+}
+
+.grid {
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: repeat(var(--column-count), var(--cell-side));
+  grid-auto-rows: minmax(calc(var(--cell-side) / 2), auto);
+  grid-gap: 1rem;
+}
+
+.card {
+  background: red;
+}
+
+/* .card:hover {
+  grid-column-end: span 2;
+  grid-row-end: span 2;
+} */

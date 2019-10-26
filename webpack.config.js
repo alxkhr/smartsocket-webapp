@@ -1,9 +1,18 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
+  plugins: [
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin(['res']),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+  ],
   module: {
     rules: [
       {
@@ -12,7 +21,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: 'css-loader',
+        use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { modules: true } }],
       },
     ],
   },
@@ -23,7 +32,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
-  plugins: [new CleanWebpackPlugin(), new CopyWebpackPlugin(['res'])],
   devServer: {
     writeToDisk: true,
     historyApiFallback: true,

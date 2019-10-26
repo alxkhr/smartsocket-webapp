@@ -1,0 +1,92 @@
+.card {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(150deg, rgba(34, 34, 34, 1) 0%, rgba(0, 0, 0, 1) 80%);
+  display: flex;
+  flex-direction: column;
+}
+
+.card.unplugged {
+  color: #888888;
+  background: #222222;
+}
+
+.card.charging {
+  background: linear-gradient(210deg, rgba(94, 176, 48, 0) 50%, rgba(94, 176, 48, 0.5) 100%);
+  animation: flicker 1000ms ease infinite;
+  background-size: 200% 200%;
+}
+
+.progress {
+  flex: 0 0 auto;
+  height: 8px;
+}
+
+.progress svg {
+  position: absolute;
+}
+
+.content {
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: 1fr 8rem;
+  grid-template-rows: 6rem 1fr;
+}
+
+.title {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  padding-left: 2rem;
+}
+
+.strategy {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strategyInput {
+  width: 6rem;
+}
+
+.banner {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+}
+
+.banner img {
+  width: 70%;
+}
+
+.chargeNow {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 3rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.chargeNowIcon {
+  fill: currentColor;
+  height: 3rem;
+}
+
+@keyframes flicker {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 15% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

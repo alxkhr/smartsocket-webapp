@@ -1,7 +1,113 @@
+import { Button, MenuItem, Select, TextField } from '@material-ui/core';
+import { AirlineSeatIndividualSuite, DirectionsCar, Done, Smartphone } from '@material-ui/icons';
+import { KeyboardTimePicker } from '@material-ui/pickers';
+import { create } from 'jss';
+import * as moment from 'moment';
 import * as React from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
+
+import { Screen } from '../../screen/screen';
+import * as css from './config.css';
+import { getDeviceConfigPresetByType } from './presets';
 
 export function DeviceConfig() {
   const { id } = useParams();
-  return <div>device config: {id}</div>;
+  const history = useHistory();
+  // todo get initial values if id is 'create'
+  const [strategy, setStrategy] = React.useState<moment.Moment | null>(null);
+  const [duration, setDuration] = React.useState<moment.Moment | null>(null);
+  const [name, setName] = React.useState<string | null>(null);
+  const [type, setType] = React.useState<string | null>(null);
+  async function create() {
+    await fetch('/api/device', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        type,
+        maxChargingTimeSeconds: (duration!.hours() * 60 + duration!.minutes()) * 60,
+        chargingFinishedHour: strategy!.hours(),
+        chargingFinishedMinutes: strategy!.minutes(),
+      }),
+    });
+    history.push('/devices');
+  }
+  const isUncomplete = !type || !name || !strategy || !duration;
+  return (
+    <Screen
+      title="Create New Device"
+      menu={
+        isUncomplete
+          ? []
+          : [
+              {
+                onClick: () => {
+                  create();
+                },
+                icon: <Done style={{ fontSize: '2rem' }} />,
+              },
+            ]
+      }
+    >
+      <div className={css.container}>
+        <Select
+          className={css.input}
+          value={type || ''}
+          onChange={(e) => {
+            const preset = getDeviceConfigPresetByType(e.target.value as string);
+            if (!name) {
+              setName(preset.name);
+            }
+            if (!strategy) {
+              setStrategy(preset.strategy);
+            }
+            if (!duration) {
+              setDuration(preset.duration);
+            }
+            setType(e.target.value as string);
+          }}
+        >
+          <MenuItem value={'smartphone'}>
+            <Smartphone />
+            <span>&nbsp;Smartphone</span>
+          </MenuItem>
+          <MenuItem value={'car'}>
+            <DirectionsCar />
+            <span>&nbsp;Car</span>
+          </MenuItem>
+          <MenuItem value={'lawn_mower'}>
+            <AirlineSeatIndividualSuite />
+            <span>&nbsp;Lawn Mower</span>
+          </MenuItem>
+        </Select>
+        <TextField
+          className={css.input}
+          label="Name"
+          value={name || ''}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <TextField
+          label="Maximal Charging Duration"
+          type="time"
+          value={duration ? duration.format('HH:mm') : '00:00'}
+          className={css.input}
+          onChange={(e) => setDuration(moment(e.target.value))}
+          inputProps={{
+            step: 300,
+          }}
+        />
+        <KeyboardTimePicker
+          label="Charged until"
+          value={strategy}
+          ampm={false}
+          onChange={(v) => setStrategy(v)}
+        />
+        <Button color="primary" disabled={isUncomplete} onClick={create}>
+          CREATE
+        </Button>
+      </div>
+    </Screen>
+  );
 }
