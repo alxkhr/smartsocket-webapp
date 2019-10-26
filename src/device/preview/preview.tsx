@@ -51,7 +51,21 @@ export function DevicePreview(props: Device) {
         </div>
         <div className={css.chargeNow}>
           {['charging', 'plugged_in'].includes(props.chargingState) ? (
-            <Button color="primary" onClick={() => console.log('charge now')}>
+            <Button
+              color="primary"
+              onClick={async () => {
+                await fetch('/api/device', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    id: props.id,
+                    immediateChargingActive: true,
+                  }),
+                });
+              }}
+            >
               <svg viewBox="0 0 100 100" className={css.chargeNowIcon}>
                 <path
                   d="M38.105,90.126c-0.917,0-1.207-1.19-0.646-2.645L50.084,54.77c0.561-1.454-0.255-2.645-1.814-2.645H29.939
