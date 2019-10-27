@@ -1,7 +1,6 @@
 import { Button, MenuItem, Select, TextField } from '@material-ui/core';
 import { AirlineSeatIndividualSuite, DirectionsCar, Done, Smartphone } from '@material-ui/icons';
-import { KeyboardTimePicker } from '@material-ui/pickers';
-import { create } from 'jss';
+import { TimePicker } from '@material-ui/pickers';
 import * as moment from 'moment';
 import * as React from 'react';
 import { useHistory, useParams } from 'react-router';
@@ -70,16 +69,22 @@ export function DeviceConfig() {
           }}
         >
           <MenuItem value={'smartphone'}>
-            <Smartphone />
-            <span>&nbsp;Smartphone</span>
+            <div className={css.option}>
+              <Smartphone />
+              <span>&nbsp;Smartphone</span>
+            </div>
           </MenuItem>
           <MenuItem value={'car'}>
-            <DirectionsCar />
-            <span>&nbsp;Car</span>
+            <div className={css.option}>
+              <DirectionsCar />
+              <span>&nbsp;Car</span>
+            </div>
           </MenuItem>
           <MenuItem value={'lawn_mower'}>
-            <AirlineSeatIndividualSuite />
-            <span>&nbsp;Lawn Mower</span>
+            <div className={css.option}>
+              <AirlineSeatIndividualSuite style={{ verticalAlign: 'center' }} />
+              <span>&nbsp;Lawn Mower</span>
+            </div>
           </MenuItem>
         </Select>
         <TextField
@@ -88,20 +93,20 @@ export function DeviceConfig() {
           value={name || ''}
           onChange={(e) => setName(e.target.value)}
         />
-        <TextField
+        <TimePicker
+          autoOk
+          ampm={false}
           label="Maximal Charging Duration"
-          type="time"
-          value={duration ? duration.format('HH:mm') : '00:00'}
+          value={duration}
           className={css.input}
-          onChange={(e) => setDuration(moment(e.target.value))}
-          inputProps={{
-            step: 300,
-          }}
+          onChange={setDuration}
         />
-        <KeyboardTimePicker
+        <TimePicker
+          autoOk
+          ampm={false}
+          className={css.input}
           label="Charged until"
           value={strategy}
-          ampm={false}
           onChange={(v) => setStrategy(v)}
         />
         <Button color="primary" disabled={isUncomplete} onClick={create}>

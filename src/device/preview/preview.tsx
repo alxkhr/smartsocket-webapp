@@ -21,7 +21,19 @@ export function DevicePreview(props: Device) {
       ? '#ffffff'
       : '#5EB030';
   function showDetails() {
-    history.push(`/device/${props.id}/details`);
+    // history.push(`/device/${props.id}/details`);
+  }
+  async function updateDevice(params: Partial<Device>) {
+    await fetch('/api/device', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: props.id,
+        ...params,
+      }),
+    });
   }
   return (
     <div
@@ -43,8 +55,12 @@ export function DevicePreview(props: Device) {
             autoOk
             ampm={false}
             value={strategy}
-            onChange={(v) => {
-              setStrategy(v!);
+            onChange={(s: moment.Moment | null) => {
+              setStrategy(s!);
+              updateDevice({
+                chargingFinishedHour: s!.hours(),
+                chargingFinishedMinute: s!.minutes(),
+              });
             }}
           />
         </div>
@@ -52,18 +68,9 @@ export function DevicePreview(props: Device) {
           {['charging', 'plugged_in'].includes(props.chargingState) ? (
             <Button
               color="primary"
-              onClick={async () => {
-                await fetch('/api/device', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    id: props.id,
-                    immediateChargingActive: !props.immediateChargingActive,
-                  }),
-                });
-              }}
+              onClick={() =>
+                updateDevice({ immediateChargingActive: !props.immediateChargingActive })
+              }
             >
               <svg viewBox="0 0 100 100" className={css.chargeNowIcon}>
                 <path

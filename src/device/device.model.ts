@@ -6,6 +6,6 @@ export interface Device {
   chargedSeconds: number;
   chargingFinishedHour: number;
   chargingFinishedMinute: number;
-  immediateChargingActive: false;
+  immediateChargingActive: boolean;
   chargingState: string;
 }
