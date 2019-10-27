@@ -1,12 +1,6 @@
 :root {
-  --cell-side: calc(30rem - 1rem);
+  --cell-side: calc(100vw - 2rem);
   --column-count: 1;
-}
-@media (min-width: 32rem) {
-  :root {
-    --cell-side: calc(100vw - 2rem);
-    --column-count: 1;
-  }
 }
 @media (min-width: 47rem) {
   :root {
