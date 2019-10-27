@@ -1,5 +1,5 @@
 import { Button, Icon } from '@material-ui/core';
-import { KeyboardTimePicker } from '@material-ui/pickers';
+import { TimePicker } from '@material-ui/pickers';
 import * as moment from 'moment';
 import * as React from 'react';
 import { useHistory } from 'react-router';
@@ -20,6 +20,9 @@ export function DevicePreview(props: Device) {
       : props.chargingState === 'plugged_in'
       ? '#ffffff'
       : '#5EB030';
+  function showDetails() {
+    history.push(`/device/${props.id}/details`);
+  }
   return (
     <div
       className={`${css.card} ${
@@ -31,17 +34,13 @@ export function DevicePreview(props: Device) {
       }`}
     >
       <div className={css.content}>
-        <div
-          className={css.title}
-          onClick={() => {
-            history.push(`/device/${props.id}/details`);
-          }}
-        >
+        <div className={css.title} onClick={showDetails}>
           {props.name}
         </div>
         <div className={css.strategy}>
-          <KeyboardTimePicker
+          <TimePicker
             className={css.strategyInput}
+            autoOk
             ampm={false}
             value={strategy}
             onChange={(v) => {
@@ -61,7 +60,7 @@ export function DevicePreview(props: Device) {
                   },
                   body: JSON.stringify({
                     id: props.id,
-                    immediateChargingActive: true,
+                    immediateChargingActive: !props.immediateChargingActive,
                   }),
                 });
               }}
@@ -79,7 +78,7 @@ export function DevicePreview(props: Device) {
             <Icon className={css.chargeNowIcon}>link_off</Icon>
           )}
         </div>
-        <div className={css.banner}>
+        <div className={css.banner} onClick={showDetails}>
           <img
             src={`/img/${
               ['car', 'smartphone', 'lawn_mower'].includes(props.type) ? props.type : 'car'

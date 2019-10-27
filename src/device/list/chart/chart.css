@@ -1,0 +1,26 @@
+.chart {
+  color: white;
+  animation: tint 1s ease-out forwards;
+}
+
+.circle {
+  stroke-dasharray: 250;
+  stroke-dashoffset: 0;
+  animation: draw 1s ease-out forwards;
+}
+
+.chart text {
+  fill: currentColor;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 250;
+  }
+}
+
+@keyframes tint {
+  from {
+    color: hsl(0, 80%, 50%);
+  }
+}
