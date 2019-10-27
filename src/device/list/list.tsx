@@ -87,7 +87,6 @@ async function fetchDevices(setDevices: ((devices: Device[]) => void) | null) {
 async function fetchEmissions(setEmissions: (emissions: EmissionState) => void) {
   const response = await fetch('/api/emissions/current');
   const emissions: EmissionState = await response.json();
-  console.log(emissions);
   if (setEmissions) {
     setEmissions(emissions);
   }
