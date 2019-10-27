@@ -1,4 +1,4 @@
-const PRECACHE = 'precache-v5';
+const PRECACHE = 'precache-v7';
 const RUNTIME = 'runtime';
 
 const PRECACHE_URLS = ['index.html', './', 'main.css', 'main.js'];
@@ -32,6 +32,9 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.url.match('^.*(/api/).*$')) {
+    return false;
+  }
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
