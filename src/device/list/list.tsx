@@ -17,7 +17,7 @@ export function DeviceList() {
   const history = useHistory();
   const [devices, setDevices] = React.useState<Device[]>([]);
   const [emissions, setEmissions] = React.useState<EmissionState>({
-    carbonIntensity: 100,
+    carbonIntensity: -1,
     fossilFuelPercentage: 50,
   });
   React.useEffect(() => {
@@ -47,7 +47,7 @@ export function DeviceList() {
       ]}
     >
       <div className={css.emission}>
-        {emissions.fossilFuelPercentage >= 0 && <EmissionChart {...emissions} />}
+        {emissions.carbonIntensity >= 0 && <EmissionChart {...emissions} />}
       </div>
       <ul className={css.grid}>
         {devices
